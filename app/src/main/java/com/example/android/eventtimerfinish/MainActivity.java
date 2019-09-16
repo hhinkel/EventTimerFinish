@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.eclipse.paho.client.mqttv3.MqttException;
+
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -146,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //TODO: Encrypt data
             MqttHelper mqttHelper = new MqttHelper(context);
             String msg = createMessageString(rider);
-            mqttHelper.connect(mqttHelper, msg);
+            mqttHelper.connect(msg);
         } else {
             numberError();
         }
@@ -169,23 +171,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void insertRider(Rider rider){
 
-        //RiderDbHelper mDbHelper = new RiderDbHelper(this);
-        //SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
         ContentValues values = new ContentValues();
         values.put(RiderContract.RiderEntry.COLUMN_RIDER_NUM, rider.getRiderNumber());
-        values.put(RiderContract.RiderEntry.COLUMN_FENCE_NUM, 0);
-        values.put(RiderContract.RiderEntry.COLUMN_RIDER_START, rider.getStartTime());
-        values.put(RiderContract.RiderEntry.COLUMN_RIDER_FINISH, 0);
-
-        //long newRowId = db.insert(RiderContract.RiderEntry.TABLE_NAME, null, values);
-        //if(newRowId == -1) {
-        //    Toast.makeText(this, "Error Saving Rider Data", Toast.LENGTH_SHORT).show();
-        //}
+        values.put(RiderContract.RiderEntry.COLUMN_FENCE_NUM, 99);
+        values.put(RiderContract.RiderEntry.COLUMN_RIDER_START, 0);
+        values.put(RiderContract.RiderEntry.COLUMN_RIDER_FINISH, rider.getFinishTime());
 
         Uri newUri = getContentResolver().insert(RiderContract.RiderEntry.CONTENT_URI,values);
         Log.v("MainActivity", newUri + " value of newUri");
-        //    Toast.makeText(this,"Value of newUri: " + newUri, Toast.LENGTH_SHORT).show();
     }
 
     public void numberError(){
