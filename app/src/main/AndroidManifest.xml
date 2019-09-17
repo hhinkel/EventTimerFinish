@@ -30,7 +30,7 @@
             android:parentActivityName=".CatalogActivity" >
         </activity>
         <provider
-            android:authorities="com.example.eventtimerstart"
+            android:authorities="com.example.eventtimerfinish"
             android:name=".RiderProvider" />
         <service android:name="org.eclipse.paho.android.service.MqttService" />
     </application>

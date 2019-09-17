@@ -13,7 +13,7 @@
     <string name="zero">0</string>
     <string name="clear">Clear</string>
     <string name="rNumber">Rider Number</string>
-    <string name="start">Start</string>
+    <string name="finish">Finish</string>
     <string name="action_view_all_enteries">View Entered Data</string>
     <string name="action_delete_all_enteries">Delete Entered Data</string>
     <string name="action_uninstall">Uninstall</string>

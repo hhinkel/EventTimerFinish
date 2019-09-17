@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public Rider saveRiderData (String number, long finishTime){
         int num = Integer.parseInt(number);
-        return new Rider(num, 0, finishTime, 0);
+        return new Rider(num, 99, 0, finishTime);
     }
 
     private void insertRider(Rider rider){
@@ -192,7 +192,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private String createMessageString (Rider rider) {
-        return rider.toString();
+
+        return rider.getRiderNumber() + "," + rider.getFenceNumber() + "," + rider.getStartTime() + "," + rider.getFinishTime();
     }
 
     @Override
