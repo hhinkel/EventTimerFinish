@@ -138,12 +138,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void enterNumber(EditText input) throws MqttException, UnsupportedEncodingException {
         Calendar now = Calendar.getInstance();
-        long startTime = now.getTimeInMillis();
+        long finishTime = now.getTimeInMillis();
         Context context = getApplicationContext();
         if(input.length() > 0) {
 
             showTimeNumber(input.getText().toString(), now);
-            Rider rider = saveRiderData(input.getText().toString(), startTime);
+            Rider rider = saveRiderData(input.getText().toString(), finishTime);
             insertRider(rider);
             //TODO: Encrypt data
             MqttHelper mqttHelper = new MqttHelper(context);
@@ -157,16 +157,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void showTimeNumber(String number, Calendar now){
         Context context = getApplicationContext();
         SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss:SS", Locale.getDefault());
-        Date startTime = now.getTime();
-        CharSequence text = "Rider: " + number + " Start Time: " + format.format(startTime);
+        Date finishTime = now.getTime();
+        CharSequence text = "Rider: " + number + " Finish Time: " + format.format(finishTime);
         int duration = Toast.LENGTH_LONG;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
 
-    public Rider saveRiderData (String number, long startTime){
+    public Rider saveRiderData (String number, long finishTime){
         int num = Integer.parseInt(number);
-        return new Rider(num, 0, startTime, 0);
+        return new Rider(num, 0, finishTime, 0);
     }
 
     private void insertRider(Rider rider){

@@ -30,17 +30,17 @@ public class RiderCursorAdapter extends CursorAdapter{
         TextView summaryTextView = view.findViewById(R.id.summary);
 
         int numberColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_RIDER_NUM);
-        int startColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_RIDER_START);
+        int finishColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_RIDER_FINISH);
 
         String riderNumber = cursor.getString(numberColumnIndex);
-        long startTimeRaw = cursor.getLong(startColumnIndex);
-        String startTime = "Start Time: " + formatStartTime(startTimeRaw);
+        long finishTimeRaw = cursor.getLong(finishColumnIndex);
+        String finishTime = "Finish Time: " + formatFinishTime(finishTimeRaw);
 
         numberTextView.setText(riderNumber);
-        summaryTextView.setText(startTime);
+        summaryTextView.setText(finishTime);
     }
 
-    private String formatStartTime(long timeRaw) {
+    private String formatFinishTime(long timeRaw) {
         Timestamp ts = new Timestamp(timeRaw);
         Date time = new Date(ts.getTime());
         SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss:SS", Locale.getDefault());

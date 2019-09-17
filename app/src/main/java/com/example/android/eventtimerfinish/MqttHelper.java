@@ -19,7 +19,7 @@ public class MqttHelper {
     final private String serverUri = "tcp://soldier.cloudmqtt.com:16424";
 
     final private String clientId = "StartApp";
-    final private String subscriptionTopic = "startTime/start";
+    final private String subscriptionTopic = "eventTimer";
 
     final private String username = "yrzlekwy";
     final private String key = "";
