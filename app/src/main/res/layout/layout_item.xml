@@ -21,19 +21,19 @@
         style="@style/EditorFieldStyle" />
 
     <LinearLayout
-        android:id="@+id/container_division"
+        android:id="@+id/container_edit_division"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/double_margin" >
 
         <TextView
-            android:text="@string/division"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
             android:layout_marginStart="16dp"
-            android:textSize="20sp"
-            android:textColor="@android:color/black"/>
+            android:text="@string/division"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -43,7 +43,7 @@
 
             <Spinner
                 android:id="@+id/edit_spinner_division"
-                android:layout_width="48dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="@dimen/activity_margin"
                 android:spinnerMode="dropdown" />

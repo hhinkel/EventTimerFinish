@@ -137,7 +137,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public boolean onCreateOptionsMenu (Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_catalog, menu);
+        getMenuInflater().inflate(R.menu.menu_editor, menu);
         return true;
     }
 
