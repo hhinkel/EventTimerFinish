@@ -14,15 +14,15 @@
     <string name="clear">Clear</string>
     <string name="rNumber">Rider Number</string>
     <string name="finish">Finish</string>
-    <string name="action_view_all_enteries">View Entered Data</string>
-    <string name="action_delete_all_enteries">Delete Entered Data</string>
+    <string name="action_view_all_entries">View Entered Data</string>
+    <string name="action_delete_all_entries">Delete Entered Data</string>
     <string name="action_uninstall">Uninstall</string>
     <string name="empty_view_title_text">No Riders yet</string>
     <string name="empty_view_subtitle_text">Nope</string>
     <string name="category_overview">Overview</string>
     <string name="unsaved_changes_dialog_msg">You have unsaved changes</string>
     <string name="editor_activity_title_new_rider">Enter New Rider</string>
-    <string name="editor_activity_title_edit_rider">Edit New Rider</string>
+    <string name="editor_activity_title_edit_rider">Edit Rider</string>
     <string name="editor_insert_rider_failed">Insert Rider Failed</string>
     <string name="editor_insert_rider_success">Insert Rider Succeeded</string>
     <string name="editor_update_rider_failed">Update Rider Failed</string>
@@ -36,4 +36,5 @@
     <string name="editor_delete_rider_success">Edit Rider Succeeded</string>
     <string name="action_delete">Delete</string>
     <string name="action_save">Save</string>
+    <string name="division">Division</string>
 </resources>

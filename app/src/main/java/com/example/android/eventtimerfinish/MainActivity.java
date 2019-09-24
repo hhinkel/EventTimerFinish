@@ -7,12 +7,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -28,6 +32,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //Global Variables
     Button[] btn = new Button[13];
     EditText userInput;
+
+    private Spinner divisionSpinner;
+    private String division;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +54,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn[9] = findViewById(R.id.button9);
         btn[10] = findViewById(R.id.buttonBack);
         btn[11] = findViewById(R.id.buttonClear);
-        btn[12] = findViewById(R.id.buttonStart);
+        btn[12] = findViewById(R.id.buttonFinish);
+
+        divisionSpinner = findViewById(R.id.spinner_division);
 
         //Setup on click listener
         for(int i = 0; i < 13; i++){
             btn[i].setOnClickListener(this);
         }
+
+        setupDivisionSpinner();
     }
 
     @Override
@@ -91,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.buttonClear:
                 clearNumber(userInput);
                 break;
-            case R.id.buttonStart:
+            case R.id.buttonFinish:
                 try {
                     enterNumber(userInput);
                 } catch (UnsupportedEncodingException e) {
@@ -105,6 +116,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 goBackAChar(userInput);
                 break;
         }
+    }
+
+    private void setupDivisionSpinner() {
+        ArrayAdapter divisionSpinnerAdapter = ArrayAdapter.createFromResource(this,
+                R.array.array_division_options, android.R.layout.simple_spinner_item);
+
+        divisionSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+
+        divisionSpinner.setAdapter(divisionSpinnerAdapter);
+
+        divisionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selection = (String) parent.getItemAtPosition(position);
+                if (!TextUtils.isEmpty(selection)) {
+                    division = selection;
+                } else {
+                    division = "Division Unknown";
+                }
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+                division = "Division Unknown";
+            }
+        });
     }
 
     public void addToArray(String number) {
@@ -166,13 +202,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public Rider saveRiderData (String number, long finishTime){
         int num = Integer.parseInt(number);
-        return new Rider(num, 99, 0, finishTime);
+        return new Rider(num, division, 99, 0, finishTime);
     }
 
     private void insertRider(Rider rider){
 
         ContentValues values = new ContentValues();
         values.put(RiderContract.RiderEntry.COLUMN_RIDER_NUM, rider.getRiderNumber());
+        values.put(RiderContract.RiderEntry.COLUMN_DIVISION, rider.getDivision());
         values.put(RiderContract.RiderEntry.COLUMN_FENCE_NUM, 99);
         values.put(RiderContract.RiderEntry.COLUMN_RIDER_START, 0);
         values.put(RiderContract.RiderEntry.COLUMN_RIDER_FINISH, rider.getFinishTime());
@@ -193,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private String createMessageString (Rider rider) {
 
-        return rider.getRiderNumber() + "," + rider.getFenceNumber() + "," + rider.getStartTime() + "," + rider.getFinishTime();
+        return rider.getRiderNumber() + "," + rider.getDivision() + "," + rider.getFenceNumber() + "," + rider.getStartTime() + "," + rider.getFinishTime();
     }
 
     @Override

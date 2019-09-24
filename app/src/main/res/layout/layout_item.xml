@@ -6,6 +6,13 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/activity_margin" >
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rider Number"
+        android:textSize="20sp"
+        android:textColor="@android:color/black" />
+
     <EditText
         android:id="@+id/edit_rider_number"
         android:layout_width="wrap_content"
@@ -13,4 +20,34 @@
         android:inputType="number"
         style="@style/EditorFieldStyle" />
 
+    <LinearLayout
+        android:id="@+id/container_division"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/double_margin" >
+
+        <TextView
+            android:text="@string/division"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginStart="16dp"
+            android:textSize="20sp"
+            android:textColor="@android:color/black"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical" >
+
+            <Spinner
+                android:id="@+id/edit_spinner_division"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/activity_margin"
+                android:spinnerMode="dropdown" />
+
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

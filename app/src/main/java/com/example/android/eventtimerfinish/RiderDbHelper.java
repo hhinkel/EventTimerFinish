@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class RiderDbHelper extends  SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "rider.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     RiderDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -21,9 +21,10 @@ public class RiderDbHelper extends  SQLiteOpenHelper {
         String SQL_CREATE_RIDER_TABLE =  "CREATE TABLE " + RiderContract.RiderEntry.TABLE_NAME + " ("
                 + RiderContract.RiderEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + RiderContract.RiderEntry.COLUMN_RIDER_NUM + " INTEGER NOT NULL, "
+                + RiderContract.RiderEntry.COLUMN_DIVISION + "TEXT NOT NULL,"
                 + RiderContract.RiderEntry.COLUMN_FENCE_NUM + " INTEGER DEFAULT 0, "
-                + RiderContract.RiderEntry.COLUMN_RIDER_START + " INTEGER NOT NULL, "
-                + RiderContract.RiderEntry.COLUMN_RIDER_FINISH + " INTEGER DEFAULT 0);";
+                + RiderContract.RiderEntry.COLUMN_RIDER_START + " INTEGER DEFAULT 0, "
+                + RiderContract.RiderEntry.COLUMN_RIDER_FINISH + " INTEGER NOT NULL);";
 
         // Execute the SQL statement
         db.execSQL(SQL_CREATE_RIDER_TABLE);

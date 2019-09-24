@@ -12,7 +12,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,7 +33,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private static final int EXISTING_RIDER_LOADER = 0;
     private Uri mCurrentRiderUri;
     private EditText mNumberEditText;
+    private Spinner mDivisionEditSpinner;
     private String mNumber;
+    private String mOldNumber;
+    private String mDivision;
+    private String mOldDivision;
     private int mFenceNum;
     private long mStartTime;
     private long mFinishTime;
@@ -57,8 +64,36 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         getSupportLoaderManager().initLoader(EXISTING_RIDER_LOADER, null, this);
 
         mNumberEditText = findViewById(R.id.edit_rider_number);
+        mDivisionEditSpinner = findViewById(R.id.edit_spinner_division);
 
         mNumberEditText.setOnTouchListener(mTouchListener);
+        mDivisionEditSpinner.setOnTouchListener(mTouchListener);
+
+        setupSpinner();
+    }
+
+    private void setupSpinner() {
+        ArrayAdapter divisionSpinnerAdapter = ArrayAdapter.createFromResource(this,
+                R.array.array_division_options, android.R.layout.simple_spinner_item);
+        divisionSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        mDivisionEditSpinner.setAdapter(divisionSpinnerAdapter);
+
+        mDivisionEditSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selection = (String) parent.getItemAtPosition(position);
+                if (!TextUtils.isEmpty(selection)) {
+                    mDivision = selection;
+                } else {
+                    mDivision = "Division Unknown";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                mDivision = "Division Unknown";
+            }
+        });
     }
 
     private void saveRider() {
@@ -71,6 +106,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         ContentValues values = new ContentValues();
         values.put(RiderContract.RiderEntry.COLUMN_RIDER_NUM, mNumber);
+        values.put(RiderContract.RiderEntry.COLUMN_DIVISION, mDivision);
 
         if (mCurrentRiderUri == null) {
             Uri newUri = getContentResolver().insert(RiderContract.RiderEntry.CONTENT_URI, values);
@@ -90,7 +126,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
         Context context = getApplicationContext();
         MqttHelper mqttHelper = new MqttHelper(context);
-        Rider rider = new Rider(Integer.parseInt(mNumber), mFenceNum, mStartTime, mFinishTime);
+        Rider rider = new Rider(Integer.parseInt(mNumber), mDivision, mFenceNum, mStartTime, mFinishTime);
         String msg = createMessageString(rider);
         mqttHelper.connect(msg);
     }
