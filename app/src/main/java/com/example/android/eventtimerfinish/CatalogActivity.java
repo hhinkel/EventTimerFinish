@@ -64,7 +64,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         getSupportLoaderManager().initLoader(RIDER_LOADER, null, this);
     }
 
-    private void deleteAllRides() {
+    private void deleteAllRiders() {
         int rowsDeleted = getContentResolver().delete(RiderContract.RiderEntry.CONTENT_URI, null, null);
         Log.v("CatalogActivity", rowsDeleted + " rows deleted from rider database");
     }
@@ -79,7 +79,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit_delete_all_entries:
-                deleteAllRides();
+                deleteAllRiders();
                 return true;
             case R.id.edit_uninstall:
                 return true;

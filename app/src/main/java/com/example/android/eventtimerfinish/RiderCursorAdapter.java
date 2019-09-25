@@ -27,16 +27,20 @@ public class RiderCursorAdapter extends CursorAdapter{
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         TextView numberTextView = view.findViewById(R.id.number);
+//        TextView divisionTextView = view.findViewById(R.id.division);
         TextView summaryTextView = view.findViewById(R.id.summary);
 
         int numberColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_RIDER_NUM);
         int finishColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_RIDER_FINISH);
+//        int divisionColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_DIVISION);
 
         String riderNumber = cursor.getString(numberColumnIndex);
+//        String division = cursor.getString(divisionColumnIndex);
         long finishTimeRaw = cursor.getLong(finishColumnIndex);
         String finishTime = "Finish Time: " + formatFinishTime(finishTimeRaw);
 
         numberTextView.setText(riderNumber);
+//        divisionTextView.setText(division);
         summaryTextView.setText(finishTime);
     }
 

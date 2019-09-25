@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
-    private void deleteAllRides() {
+    private void deleteAllRiders() {
         int rowsDeleted = getContentResolver().delete(RiderContract.RiderEntry.CONTENT_URI, null, null);
         Log.v("CatalogActivity", rowsDeleted + " rows deleted from rider database");
     }
@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(catalogIntent);
                 return true;
             case R.id.action_delete_all_entries:
-                deleteAllRides();
+                deleteAllRiders();
                 return true;
             case R.id.action_uninstall:
                 uninstallApp();
