@@ -203,6 +203,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String[] projection = {
                 RiderContract.RiderEntry._ID,
                 RiderContract.RiderEntry.COLUMN_RIDER_NUM,
+                RiderContract.RiderEntry.COLUMN_DIVISION,
                 RiderContract.RiderEntry.COLUMN_FENCE_NUM,
                 RiderContract.RiderEntry.COLUMN_RIDER_START,
                 RiderContract.RiderEntry.COLUMN_RIDER_FINISH };
@@ -223,11 +224,13 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         if (cursor.moveToFirst()) {
             int riderColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_RIDER_NUM);
+            int divisionColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_DIVISION);
             int fenceColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_FENCE_NUM);
             int startColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_RIDER_START);
             int finishColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_RIDER_FINISH);
 
             mNumber = cursor.getString(riderColumnIndex);
+            mDivision = cursor.getString(divisionColumnIndex);
             mFenceNum = cursor.getInt(fenceColumnIndex);
             mStartTime = cursor.getLong(startColumnIndex);
             mFinishTime = cursor.getLong(finishColumnIndex);
