@@ -22,7 +22,7 @@ public class MqttHelper {
     final private String subscriptionTopic = "eventTimer";
 
     final private String username = "yrzlekwy";
-    final private String key = "pBVkVlJy413x";
+    final private String key = "";
 
     public MqttHelper(Context context) {
         mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);
