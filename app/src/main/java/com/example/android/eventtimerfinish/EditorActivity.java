@@ -37,7 +37,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private String mNumber;
     private String mOldNumber;
     private String mDivision;
-    private String mOldDivision;
     private int mFenceNum;
     private long mStartTime;
     private long mFinishTime;
@@ -225,17 +224,40 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if (cursor.moveToFirst()) {
             int riderColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_RIDER_NUM);
             int divisionColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_DIVISION);
-            int fenceColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_FENCE_NUM);
-            int startColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_RIDER_START);
-            int finishColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_RIDER_FINISH);
 
             mNumber = cursor.getString(riderColumnIndex);
-            mDivision = cursor.getString(divisionColumnIndex);
-            mFenceNum = cursor.getInt(fenceColumnIndex);
-            mStartTime = cursor.getLong(startColumnIndex);
-            mFinishTime = cursor.getLong(finishColumnIndex);
+            String division = cursor.getString(divisionColumnIndex);
 
             mNumberEditText.setText(mNumber);
+            switch (division) {
+                case "Advanced":
+                    mDivisionEditSpinner.setSelection(0);
+                    break;
+                case "Intermediate":
+                    mDivisionEditSpinner.setSelection(1);
+                    break;
+                case "Preliminary":
+                    mDivisionEditSpinner.setSelection(2);
+                    break;
+                case "Modified":
+                    mDivisionEditSpinner.setSelection(3);
+                    break;
+                case "Training":
+                    mDivisionEditSpinner.setSelection(4);
+                    break;
+                case "Novice":
+                    mDivisionEditSpinner.setSelection(5);
+                    break;
+                case "Beginner Novice":
+                    mDivisionEditSpinner.setSelection(6);
+                    break;
+                case "Starter":
+                    mDivisionEditSpinner.setSelection(7);
+                    break;
+                case "Division Unknown":
+                    mDivisionEditSpinner.setSelection(8);
+                    break;
+            }
         }
     }
 
