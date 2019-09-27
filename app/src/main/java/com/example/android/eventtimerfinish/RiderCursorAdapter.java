@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class RiderCursorAdapter extends CursorAdapter{
+public class RiderCursorAdapter extends CursorAdapter {
 
     RiderCursorAdapter(Context context, Cursor cursor) {
         super(context, cursor, 0);
