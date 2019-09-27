@@ -37,7 +37,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private String mNumber;
     private String mOldNumber;
     private String mDivision;
-    private String mOldDivision;
     private int mFenceNum;
     private long mStartTime;
     private long mFinishTime;
@@ -238,7 +237,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             mNumberEditText.setText(mNumber);
             //This sets up the old number in case we change the number the server can find the edit
             //and make the appropriate change.
-            mNumberEditText.setText(mOldNumber);
+            mOldNumber = mNumber;
+
             switch (division) {
                 case "Advanced":
                     mDivisionEditSpinner.setSelection(0);

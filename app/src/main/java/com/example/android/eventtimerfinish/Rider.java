@@ -6,6 +6,7 @@ public final class Rider {
     private int fenceNumber;
     private long startTime;
     private long finishTime;
+    private String edit;
 
     Rider(int riderNumber, String division, int fenceNumber, long startTime, long finishTime) {
         this.riderNumber = riderNumber;
@@ -13,6 +14,7 @@ public final class Rider {
         this.fenceNumber = fenceNumber;
         this.startTime = startTime;
         this.finishTime = finishTime;
+        this.edit = edit;
     }
 
     public int getRiderNumber (){
@@ -30,5 +32,7 @@ public final class Rider {
     public long getFinishTime() {
         return finishTime;
     }
+
+    public String getEdit() { return edit; }
 }
 
