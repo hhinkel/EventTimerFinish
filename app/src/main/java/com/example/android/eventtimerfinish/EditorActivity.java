@@ -106,6 +106,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         ContentValues values = new ContentValues();
         values.put(RiderContract.RiderEntry.COLUMN_RIDER_NUM, mNumber);
         values.put(RiderContract.RiderEntry.COLUMN_DIVISION, mDivision);
+        values.put(RiderContract.RiderEntry.COLUMN_EDIT, mOldNumber);
 
         if (mCurrentRiderUri == null) {
             Uri newUri = getContentResolver().insert(RiderContract.RiderEntry.CONTENT_URI, values);
@@ -125,13 +126,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
         Context context = getApplicationContext();
         MqttHelper mqttHelper = new MqttHelper(context);
-        Rider rider = new Rider(Integer.parseInt(mNumber), mDivision, mFenceNum, mStartTime, mFinishTime);
+        Rider rider = new Rider(Integer.parseInt(mNumber), mDivision, mFenceNum, mStartTime, mFinishTime, mOldNumber);
         String msg = createMessageString(rider);
         mqttHelper.connect(msg);
     }
 
     private String createMessageString(Rider rider) {
-        return rider.toString();
+
+        return rider.getRiderNumber() + "," + rider.getDivision() + "," + rider.getFenceNumber()
+                + "," + rider.getStartTime() + "," + rider.getFinishTime() + "," + rider.getEdit();
     }
 
     @Override
@@ -205,7 +208,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 RiderContract.RiderEntry.COLUMN_DIVISION,
                 RiderContract.RiderEntry.COLUMN_FENCE_NUM,
                 RiderContract.RiderEntry.COLUMN_RIDER_START,
-                RiderContract.RiderEntry.COLUMN_RIDER_FINISH };
+                RiderContract.RiderEntry.COLUMN_RIDER_FINISH,
+                RiderContract.RiderEntry.COLUMN_EDIT };
 
         return new CursorLoader(this,
                 mCurrentRiderUri,
@@ -227,17 +231,22 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             int fenceColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_FENCE_NUM);
             int startColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_RIDER_START);
             int finishColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_RIDER_FINISH);
+            int editColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_EDIT);
 
             mNumber = cursor.getString(riderColumnIndex);
             String division = cursor.getString(divisionColumnIndex);
             mFenceNum = cursor.getInt(fenceColumnIndex);
             mStartTime = cursor.getLong(startColumnIndex);
             mFinishTime = cursor.getLong(finishColumnIndex);
+            String oldNumber = cursor.getString(editColumnIndex);
 
             mNumberEditText.setText(mNumber);
             //This sets up the old number in case we change the number the server can find the edit
             //and make the appropriate change.
-            mOldNumber = mNumber;
+            if(oldNumber != null)
+                mOldNumber = oldNumber;
+            else
+                mOldNumber = mNumber;
 
             switch (division) {
                 case "Advanced":

@@ -8,7 +8,7 @@ public final class Rider {
     private long finishTime;
     private String edit;
 
-    Rider(int riderNumber, String division, int fenceNumber, long startTime, long finishTime) {
+    Rider(int riderNumber, String division, int fenceNumber, long startTime, long finishTime, String edit) {
         this.riderNumber = riderNumber;
         this.division = division;
         this.fenceNumber = fenceNumber;
