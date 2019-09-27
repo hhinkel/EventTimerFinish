@@ -323,6 +323,13 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     private void deleteRider() {
         if (mCurrentRiderUri != null) {
+
+            Context context = getApplicationContext();
+            MqttHelper mqttHelper = new MqttHelper(context);
+            Rider rider = new Rider(Integer.parseInt(mNumber), mDivision, mFenceNum, mStartTime, mFinishTime, "D");
+            String msg = createMessageString(rider);
+            mqttHelper.connect(msg);
+
             int rowsDeleted = getContentResolver().delete(mCurrentRiderUri, null, null);
             if (rowsDeleted == 0) {
                 Toast.makeText(this, getString(R.string.editor_delete_rider_failed), Toast.LENGTH_SHORT).show();

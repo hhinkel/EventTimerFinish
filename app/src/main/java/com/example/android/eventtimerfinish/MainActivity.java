@@ -1,9 +1,11 @@
 package com.example.android.eventtimerfinish;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -242,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void deleteAllRiders() {
         int rowsDeleted = getContentResolver().delete(RiderContract.RiderEntry.CONTENT_URI, null, null);
-        Log.v("CatalogActivity", rowsDeleted + " rows deleted from rider database");
+        Log.v("MainActivity", rowsDeleted + " rows deleted from rider database");
     }
 
     private void uninstallApp() {}
@@ -255,12 +257,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(catalogIntent);
                 return true;
             case R.id.action_delete_all_entries:
-                deleteAllRiders();
+                showDeleteConfirmationDialog();
                 return true;
             case R.id.action_uninstall:
                 uninstallApp();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showDeleteConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_all_dialog_msg);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                deleteAllRiders();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                if (dialog != null)
+                    dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
