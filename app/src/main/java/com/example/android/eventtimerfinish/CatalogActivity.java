@@ -94,7 +94,9 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 RiderContract.RiderEntry._ID,
                 RiderContract.RiderEntry.COLUMN_RIDER_NUM,
                 RiderContract.RiderEntry.COLUMN_DIVISION,
-                RiderContract.RiderEntry.COLUMN_RIDER_FINISH };
+                RiderContract.RiderEntry.COLUMN_RIDER_FINISH,
+                RiderContract.RiderEntry.COLUMN_EDIT};
+
         return new CursorLoader(this, RiderContract.RiderEntry.CONTENT_URI, projection, null, null,null);
     }
 
