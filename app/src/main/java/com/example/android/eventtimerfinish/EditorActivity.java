@@ -37,7 +37,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private String mNumber;
     private String mOldNumber;
     private String mDivision;
-    private String mOldDivision;
     private int mFenceNum;
     private long mStartTime;
     private long mFinishTime;
@@ -107,6 +106,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         ContentValues values = new ContentValues();
         values.put(RiderContract.RiderEntry.COLUMN_RIDER_NUM, mNumber);
         values.put(RiderContract.RiderEntry.COLUMN_DIVISION, mDivision);
+        values.put(RiderContract.RiderEntry.COLUMN_EDIT, mOldNumber);
 
         if (mCurrentRiderUri == null) {
             Uri newUri = getContentResolver().insert(RiderContract.RiderEntry.CONTENT_URI, values);
@@ -126,13 +126,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
         Context context = getApplicationContext();
         MqttHelper mqttHelper = new MqttHelper(context);
-        Rider rider = new Rider(Integer.parseInt(mNumber), mDivision, mFenceNum, mStartTime, mFinishTime);
+        Rider rider = new Rider(Integer.parseInt(mNumber), mDivision, mFenceNum, mStartTime, mFinishTime, mOldNumber);
         String msg = createMessageString(rider);
         mqttHelper.connect(msg);
     }
 
     private String createMessageString(Rider rider) {
-        return rider.toString();
+
+        return rider.getRiderNumber() + "," + rider.getDivision() + "," + rider.getFenceNumber()
+                + "," + rider.getStartTime() + "," + rider.getFinishTime() + "," + rider.getEdit();
     }
 
     @Override
@@ -203,9 +205,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String[] projection = {
                 RiderContract.RiderEntry._ID,
                 RiderContract.RiderEntry.COLUMN_RIDER_NUM,
+                RiderContract.RiderEntry.COLUMN_DIVISION,
                 RiderContract.RiderEntry.COLUMN_FENCE_NUM,
                 RiderContract.RiderEntry.COLUMN_RIDER_START,
-                RiderContract.RiderEntry.COLUMN_RIDER_FINISH };
+                RiderContract.RiderEntry.COLUMN_RIDER_FINISH,
+                RiderContract.RiderEntry.COLUMN_EDIT };
 
         return new CursorLoader(this,
                 mCurrentRiderUri,
@@ -223,16 +227,56 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         if (cursor.moveToFirst()) {
             int riderColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_RIDER_NUM);
+            int divisionColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_DIVISION);
             int fenceColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_FENCE_NUM);
             int startColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_RIDER_START);
             int finishColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_RIDER_FINISH);
+            int editColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_EDIT);
 
             mNumber = cursor.getString(riderColumnIndex);
+            String division = cursor.getString(divisionColumnIndex);
             mFenceNum = cursor.getInt(fenceColumnIndex);
             mStartTime = cursor.getLong(startColumnIndex);
             mFinishTime = cursor.getLong(finishColumnIndex);
+            String oldNumber = cursor.getString(editColumnIndex);
 
             mNumberEditText.setText(mNumber);
+            //This sets up the old number in case we change the number the server can find the edit
+            //and make the appropriate change.
+            if(oldNumber != null)
+                mOldNumber = oldNumber;
+            else
+                mOldNumber = mNumber;
+
+            switch (division) {
+                case "Advanced":
+                    mDivisionEditSpinner.setSelection(0);
+                    break;
+                case "Intermediate":
+                    mDivisionEditSpinner.setSelection(1);
+                    break;
+                case "Preliminary":
+                    mDivisionEditSpinner.setSelection(2);
+                    break;
+                case "Modified":
+                    mDivisionEditSpinner.setSelection(3);
+                    break;
+                case "Training":
+                    mDivisionEditSpinner.setSelection(4);
+                    break;
+                case "Novice":
+                    mDivisionEditSpinner.setSelection(5);
+                    break;
+                case "Beginner Novice":
+                    mDivisionEditSpinner.setSelection(6);
+                    break;
+                case "Starter":
+                    mDivisionEditSpinner.setSelection(7);
+                    break;
+                case "Division Unknown":
+                    mDivisionEditSpinner.setSelection(8);
+                    break;
+            }
         }
     }
 
@@ -279,6 +323,13 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     private void deleteRider() {
         if (mCurrentRiderUri != null) {
+
+            Context context = getApplicationContext();
+            MqttHelper mqttHelper = new MqttHelper(context);
+            Rider rider = new Rider(Integer.parseInt(mNumber), mDivision, mFenceNum, mStartTime, mFinishTime, "D");
+            String msg = createMessageString(rider);
+            mqttHelper.connect(msg);
+
             int rowsDeleted = getContentResolver().delete(mCurrentRiderUri, null, null);
             if (rowsDeleted == 0) {
                 Toast.makeText(this, getString(R.string.editor_delete_rider_failed), Toast.LENGTH_SHORT).show();

@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class RiderCursorAdapter extends CursorAdapter{
+public class RiderCursorAdapter extends CursorAdapter {
 
     RiderCursorAdapter(Context context, Cursor cursor) {
         super(context, cursor, 0);
@@ -28,19 +28,24 @@ public class RiderCursorAdapter extends CursorAdapter{
     public void bindView(View view, Context context, Cursor cursor) {
         TextView numberTextView = view.findViewById(R.id.number);
         TextView divisionTextView = view.findViewById(R.id.division);
+        TextView editTextView = view.findViewById(R.id.edited);
         TextView summaryTextView = view.findViewById(R.id.summary);
 
         int numberColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_RIDER_NUM);
         int divisionColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_DIVISION);
         int finishColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_RIDER_FINISH);
+        int editedColumnIndex = cursor.getColumnIndex(RiderContract.RiderEntry.COLUMN_EDIT);
 
         String riderNumber = cursor.getString(numberColumnIndex);
         String division = cursor.getString(divisionColumnIndex);
+        String editRaw = cursor.getString(editedColumnIndex);
         long finishTimeRaw = cursor.getLong(finishColumnIndex);
         String finishTime = "Finish Time: " + formatFinishTime(finishTimeRaw);
 
         numberTextView.setText(riderNumber);
         divisionTextView.setText(division);
+        if(editRaw != null)
+            editTextView.setText("Edited");
         summaryTextView.setText(finishTime);
     }
 

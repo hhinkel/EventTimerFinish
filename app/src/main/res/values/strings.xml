@@ -27,7 +27,8 @@
     <string name="editor_insert_rider_success">Insert Rider Succeeded</string>
     <string name="editor_update_rider_failed">Update Rider Failed</string>
     <string name="editor_update_rider_success">Update Rider Succeeded</string>
-    <string name="delete_dialog_msg">Are you sure you want to delete?</string>
+    <string name="delete_dialog_msg">Are you sure you want to delete this rider?</string>
+    <string name="delete_all_dialog_msg">Are you sure you want to delete all riders?</string>
     <string name="discard">Discard Changes?</string>
     <string name="keep_editing">Keep Changes?</string>
     <string name="delete">Delete</string>
