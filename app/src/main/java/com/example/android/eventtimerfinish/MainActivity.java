@@ -2,6 +2,7 @@ package com.example.android.eventtimerfinish;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //Global Variables
     Button[] btn = new Button[13];
     EditText userInput;
+    ConstraintLayout relativeLayout;
 
     private Spinner divisionSpinner;
     private String division;
@@ -59,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn[12] = findViewById(R.id.buttonFinish);
 
         divisionSpinner = findViewById(R.id.spinner_division);
+        relativeLayout = (ConstraintLayout) findViewById(R.id.relative_layout);
 
         //Setup on click listener
         for(int i = 0; i < 13; i++){
@@ -112,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } catch (MqttException e) {
                     e.printStackTrace();
                 }
-                clearNumber(userInput);
                 break;
             case R.id.buttonBack:
                 goBackAChar(userInput);
@@ -138,7 +142,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     division = "Division Unknown";
                 }
             }
-
             public void onNothingSelected(AdapterView<?> parent) {
                 division = "Division Unknown";
             }
@@ -158,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String result = input.getText().toString().replace(selection, "");
             input.setText(result);
             input.setSelection(input.getText().length());
-            userInput = input;
+            userInput = null;
         }
     }
 
@@ -177,19 +180,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void enterNumber(EditText input) throws MqttException, UnsupportedEncodingException {
         Calendar now = Calendar.getInstance();
         long finishTime = now.getTimeInMillis();
-        Context context = getApplicationContext();
-        if(input.length() > 0) {
 
-            showTimeNumber(input.getText().toString(), now);
-            Rider rider = saveRiderData(input.getText().toString(), finishTime);
-            insertRider(rider);
-            //TODO: Encrypt data
-            MqttHelper mqttHelper = new MqttHelper(context);
-            String msg = createMessageString(rider);
-            mqttHelper.connect(msg);
+        if (input == null) {
+            showNumberErrorDialog(now, finishTime);
         } else {
-            numberError();
+            processNumber(input.getText().toString(), now, finishTime);
+            clearNumber(userInput);
         }
+    }
+
+    private void processNumber(String input, Calendar now, long finishTime) {
+        Context context = getApplicationContext();
+        showTimeNumber(input, now);
+        Rider rider = saveRiderData(input, finishTime);
+        insertRider(rider);
+        //TODO: Encrypt data
+        MqttHelper mqttHelper = new MqttHelper(context);
+        String msg = createMessageString(rider);
+        mqttHelper.connect(msg);
     }
 
     public void showTimeNumber(String number, Calendar now){
@@ -220,14 +228,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.v("MainActivity", newUri + " value of newUri");
     }
 
-    public void numberError(){
-        // this does not work I am going to have to do this another way.
-        // pop up a window to enter a rider number using the internal number pad
-        Context context = getApplicationContext();
-        CharSequence text = "Please enter a rider number";
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
+    public void showNumberErrorDialog(final Calendar now, final long finishTime){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.layout_popup, null);
+        builder.setView(dialogView);
+
+        userInput = (EditText) dialogView.findViewById(R.id.add_number);
+
+        builder.setTitle("Please enter the Rider Number");
+        builder.setMessage("Enter Number");
+        builder.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                processNumber(userInput.getText().toString(), now, finishTime);
+                clearNumber(userInput);
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private String createMessageString (Rider rider) {

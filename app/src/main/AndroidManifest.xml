@@ -34,5 +34,4 @@
             android:name=".RiderProvider" />
         <service android:name="org.eclipse.paho.android.service.MqttService" />
     </application>
-
 </manifest>
