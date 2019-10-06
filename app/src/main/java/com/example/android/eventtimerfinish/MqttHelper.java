@@ -16,16 +16,10 @@ public class MqttHelper {
 
     private MqttAndroidClient mqttAndroidClient;
 
-    final private String serverUri = "tcp://soldier.cloudmqtt.com:16424";
-
-    final private String clientId = "StartApp";
-    final private String subscriptionTopic = "eventTimer";
-
-    final private String username = "yrzlekwy";
-    final private String key = "";
-
     public MqttHelper(Context context) {
-        mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);
+        Utils utils = new Utils();
+        utils.loadJSONSetupData(context);
+        mqttAndroidClient = new MqttAndroidClient(context, Utils.serverUri, Utils.clientId);
         mqttAndroidClient.setCallback(new MqttCallbackExtended(){
             @Override
             public void connectComplete(boolean b, String s) {
@@ -58,11 +52,11 @@ public class MqttHelper {
         MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
         mqttConnectOptions.setAutomaticReconnect(true);
         mqttConnectOptions.setCleanSession(false);
-        mqttConnectOptions.setUserName(username);
-        mqttConnectOptions.setPassword(key.toCharArray());
+        mqttConnectOptions.setUserName(Utils.username);
+        mqttConnectOptions.setPassword(Utils.key.toCharArray());
 
         try {
-            mqttAndroidClient.connect(mqttConnectOptions, null, new IMqttActionListener() {
+              mqttAndroidClient.connect(mqttConnectOptions, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     boolean connect  = mqttAndroidClient.isConnected();
@@ -72,12 +66,12 @@ public class MqttHelper {
                         e.printStackTrace();
                     }
 
-                    Log.w("Mqtt", "Successfully connected to: " + serverUri + "Connected? " + connect);
+                    Log.w("Mqtt", "Successfully connected to: " + Utils.serverUri + "Connected? " + connect);
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Log.w("Mqtt", "Failed to connect to: " + serverUri + exception.toString());
+                    Log.w("Mqtt", "Failed to connect to: " + Utils.serverUri + exception.toString());
                 }
             });
         } catch (MqttException ex){
@@ -87,7 +81,7 @@ public class MqttHelper {
 
     private void subscribeToTopic() {
         try{
-            mqttAndroidClient.subscribe(subscriptionTopic, 2, null, new IMqttActionListener() {
+            mqttAndroidClient.subscribe(Utils.subscriptionTopic, 2, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Log.w("Mqtt", "Subscribed!");
@@ -108,7 +102,7 @@ public class MqttHelper {
         if (mqttAndroidClient.isConnected()) {
             MqttMessage message = new MqttMessage(msg.getBytes());
             message.setQos(1);
-            mqttAndroidClient.publish(subscriptionTopic, message);
+            mqttAndroidClient.publish(Utils.subscriptionTopic, message);
             mqttAndroidClient.disconnect();
         } else
             Log.w("Mqtt","Publish Failed!");

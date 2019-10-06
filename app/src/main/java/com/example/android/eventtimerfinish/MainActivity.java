@@ -20,7 +20,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn[12] = findViewById(R.id.buttonFinish);
 
         divisionSpinner = findViewById(R.id.spinner_division);
-        relativeLayout = (ConstraintLayout) findViewById(R.id.relative_layout);
+        relativeLayout = findViewById(R.id.relative_layout);
 
         //Setup on click listener
         for(int i = 0; i < 13; i++){
