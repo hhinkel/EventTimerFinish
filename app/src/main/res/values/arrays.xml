@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="array_division_options">
-        <item>Advanced</item>
+        <!-- <item>Advanced</item>
         <item>Intermediate</item>
         <item>Preliminary</item>
         <item>Modified</item>
-        <item>Training</item>
+        <item>Training</item>  -->
         <item>Novice</item>
         <item>Beginner Novice</item>
-        <item>Starter</item>
+        <!--<item>Starter</item> -->
+        <item>Advanced Elementary</item>
+        <item>Elementary</item>
         <item>Division Unknown</item>
     </string-array>
 </resources>
