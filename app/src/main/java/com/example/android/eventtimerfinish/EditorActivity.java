@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,6 +16,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -63,12 +68,34 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         getSupportLoaderManager().initLoader(EXISTING_RIDER_LOADER, null, this);
 
         mNumberEditText = findViewById(R.id.edit_rider_number);
-        mDivisionEditSpinner = findViewById(R.id.edit_spinner_division);
 
         mNumberEditText.setOnTouchListener(mTouchListener);
-        mDivisionEditSpinner.setOnTouchListener(mTouchListener);
 
-        setupSpinner();
+        Context context = getApplicationContext();
+        createRadioGroup(context);
+
+//        setupSpinner();
+    }
+
+    private void createRadioGroup(Context context) {
+        RadioGroup divisionGroup = new RadioGroup(context);
+        divisionGroup.setOrientation(RadioGroup.HORIZONTAL);
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        divisionGroup.setLayoutParams(layoutParams);
+
+        RadioButton novice = new RadioButton(context);
+        novice.setText("Novice");
+        novice.setTextColor(Color.BLACK);
+        divisionGroup.addView(novice);
+
+        RadioButton beginnerNovice = new RadioButton(context);
+        beginnerNovice.setText("Beginner Novice");
+        beginnerNovice.setTextColor(Color.BLACK);
+        divisionGroup.addView(beginnerNovice);
+
     }
 
     private void setupSpinner() {

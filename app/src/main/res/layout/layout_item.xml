@@ -20,34 +20,4 @@
         android:inputType="number"
         style="@style/EditorFieldStyle" />
 
-    <LinearLayout
-        android:id="@+id/container_edit_division"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="32dp" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="@string/division"
-            android:textColor="@android:color/black"
-            android:textSize="20sp" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:orientation="vertical" >
-
-            <Spinner
-                android:id="@+id/edit_spinner_division"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="@dimen/activity_margin"
-                android:spinnerMode="dropdown" />
-
-        </LinearLayout>
-    </LinearLayout>
 </LinearLayout>
