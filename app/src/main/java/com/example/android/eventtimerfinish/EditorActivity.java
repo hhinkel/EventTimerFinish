@@ -19,7 +19,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -45,8 +44,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private int mFenceNum;
     private long mStartTime;
     private long mFinishTime;
-
     private boolean mRiderHasChanged = false;
+
+    private String mDivisionArray[] = getResources().getStringArray(R.array.array_division_options);
+    private int mNumDivisions = mDivisionArray.length;
 
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
@@ -67,17 +68,18 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         setTitle(getString(R.string.editor_activity_title_edit_rider));
         getSupportLoaderManager().initLoader(EXISTING_RIDER_LOADER, null, this);
 
+        final LinearLayout layout = (LinearLayout) findViewById(R.id.item_layout);
         mNumberEditText = findViewById(R.id.edit_rider_number);
 
         mNumberEditText.setOnTouchListener(mTouchListener);
 
         Context context = getApplicationContext();
-        createRadioGroup(context);
+        createRadioGroup(context, layout);
 
 //        setupSpinner();
     }
 
-    private void createRadioGroup(Context context) {
+    private void createRadioGroup(Context context, LinearLayout layout) {
         RadioGroup divisionGroup = new RadioGroup(context);
         divisionGroup.setOrientation(RadioGroup.HORIZONTAL);
 
@@ -85,8 +87,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         divisionGroup.setLayoutParams(layoutParams);
+        RadioButton[] division = new RadioButton[mDivisionArray.length];
 
-        RadioButton novice = new RadioButton(context);
+        for(int i = 0; i < mDivisionArray.length; i++){
+            division[i].setText(mDivisionArray[i]);
+            division[i].setTextColor(Color.BLACK);
+            divisionGroup.addView(division[i]);
+        }
+
+        /* RadioButton novice = new RadioButton(context);
         novice.setText("Novice");
         novice.setTextColor(Color.BLACK);
         divisionGroup.addView(novice);
@@ -94,8 +103,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         RadioButton beginnerNovice = new RadioButton(context);
         beginnerNovice.setText("Beginner Novice");
         beginnerNovice.setTextColor(Color.BLACK);
-        divisionGroup.addView(beginnerNovice);
+        divisionGroup.addView(beginnerNovice);  */
 
+        layout.addView(divisionGroup);
     }
 
     private void setupSpinner() {
@@ -275,7 +285,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             else
                 mOldNumber = mNumber;
 
-            switch (division) {
+     /*       switch (division) {
                 case "Advanced":
                     mDivisionEditSpinner.setSelection(0);
                     break;
@@ -303,7 +313,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 case "Division Unknown":
                     mDivisionEditSpinner.setSelection(8);
                     break;
-            }
+            } */
         }
     }
 
