@@ -27,6 +27,7 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
+import java.util.Arrays;
 
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -39,6 +40,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private String mDivisionString;
     RadioButton[] mDivision;
     String[] mDivisionArray;
+    RadioGroup mDivisionGroup;
     private int mFenceNum;
     private long mStartTime;
     private long mFinishTime;
@@ -78,29 +80,31 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     private void createRadioGroup(Context context, LinearLayout layout) {
-        RadioGroup divisionGroup = new RadioGroup(context);
-        divisionGroup.setOrientation(RadioGroup.VERTICAL);
+        mDivisionGroup = new RadioGroup(context);
+        mDivisionGroup.setOrientation(RadioGroup.VERTICAL);
 
         mDivisionArray = getResources().getStringArray(R.array.array_division_options);
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        divisionGroup.setLayoutParams(layoutParams);
+        mDivisionGroup.setLayoutParams(layoutParams);
         mDivision = new RadioButton[mDivisionArray.length];
 
         for(int i = 0; i < mDivisionArray.length; i++){
             mDivision[i] = new RadioButton(context);
             mDivision[i].setText(mDivisionArray[i]);
             mDivision[i].setTextColor(Color.BLACK);
-            divisionGroup.addView(mDivision[i]);
+            mDivisionGroup.addView(mDivision[i]);
         }
 
-        layout.addView(divisionGroup);
+        layout.addView(mDivisionGroup);
     }
 
     private void saveRider() {
         mNumber = mNumberEditText.getText().toString().trim();
+        int index = mDivisionGroup.getCheckedRadioButtonId();
+        mDivisionString = mDivisionArray[index];
 
         if (mCurrentRiderUri == null &&
                 TextUtils.isEmpty(mNumber)) {
@@ -243,8 +247,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             mFinishTime = cursor.getLong(finishColumnIndex);
             String oldNumber = cursor.getString(editColumnIndex);
 
+            //Check the division that is currently associated with the rider.
             mNumberEditText.setText(mNumber);
-            mDi
+            int index = Arrays.asList(mDivisionArray).indexOf(division);
+            mDivision[index].setChecked(true);
 
             //This sets up the old number in case we change the number the server can find the edit
             //and make the appropriate change.
