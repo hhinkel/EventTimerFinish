@@ -36,13 +36,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private EditText mNumberEditText;
     private String mNumber;
     private String mOldNumber;
-    private String mDivision;
+    private String mDivisionString;
+    RadioButton[] mDivision;
+    String[] mDivisionArray;
     private int mFenceNum;
     private long mStartTime;
     private long mFinishTime;
     private boolean mRiderHasChanged = false;
+    Context mContext;
 
-    String[] mDivisionArray;
 
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
@@ -57,6 +59,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_item);
 
+        mContext = getApplicationContext();
+
         Intent intent = getIntent();
         mCurrentRiderUri = intent.getData();
 
@@ -68,8 +72,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         mNumberEditText.setOnTouchListener(mTouchListener);
 
-        Context context = getApplicationContext();
-        createRadioGroup(context, layout);
+
+        createRadioGroup(mContext, layout);
 
     }
 
@@ -83,13 +87,13 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         divisionGroup.setLayoutParams(layoutParams);
-        RadioButton[] division = new RadioButton[mDivisionArray.length];
+        mDivision = new RadioButton[mDivisionArray.length];
 
         for(int i = 0; i < mDivisionArray.length; i++){
-            division[i] = new RadioButton(context);
-            division[i].setText(mDivisionArray[i]);
-            division[i].setTextColor(Color.BLACK);
-            divisionGroup.addView(division[i]);
+            mDivision[i] = new RadioButton(context);
+            mDivision[i].setText(mDivisionArray[i]);
+            mDivision[i].setTextColor(Color.BLACK);
+            divisionGroup.addView(mDivision[i]);
         }
 
         layout.addView(divisionGroup);
@@ -105,7 +109,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         ContentValues values = new ContentValues();
         values.put(RiderContract.RiderEntry.COLUMN_RIDER_NUM, mNumber);
-        values.put(RiderContract.RiderEntry.COLUMN_DIVISION, mDivision);
+        values.put(RiderContract.RiderEntry.COLUMN_DIVISION, mDivisionString);
         values.put(RiderContract.RiderEntry.COLUMN_EDIT, mOldNumber);
 
         if (mCurrentRiderUri == null) {
@@ -124,9 +128,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 Toast.makeText(this, getString(R.string.editor_update_rider_success), Toast.LENGTH_SHORT).show();
             }
         }
-        Context context = getApplicationContext();
-        MqttHelper mqttHelper = new MqttHelper(context);
-        Rider rider = new Rider(Integer.parseInt(mNumber), mDivision, mFenceNum, mStartTime, mFinishTime, mOldNumber);
+        MqttHelper mqttHelper = new MqttHelper(mContext);
+        Rider rider = new Rider(Integer.parseInt(mNumber), mDivisionString, mFenceNum, mStartTime, mFinishTime, mOldNumber);
         String msg = createMessageString(rider);
         mqttHelper.connect(msg);
     }
@@ -241,6 +244,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             String oldNumber = cursor.getString(editColumnIndex);
 
             mNumberEditText.setText(mNumber);
+            mDi
+
             //This sets up the old number in case we change the number the server can find the edit
             //and make the appropriate change.
             if(oldNumber != null)
@@ -296,7 +301,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
             Context context = getApplicationContext();
             MqttHelper mqttHelper = new MqttHelper(context);
-            Rider rider = new Rider(Integer.parseInt(mNumber), mDivision, mFenceNum, mStartTime, mFinishTime, "D");
+            Rider rider = new Rider(Integer.parseInt(mNumber), mDivisionString, mFenceNum, mStartTime, mFinishTime, "D");
             String msg = createMessageString(rider);
             mqttHelper.connect(msg);
 
