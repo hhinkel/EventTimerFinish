@@ -26,8 +26,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     //Identifier for the data loader
     private static final int RIDER_LOADER = 0;
 
-    private Uri mCurrentRiderUri;
-
     RiderCursorAdapter mCursorAdapter;
 
 
@@ -37,7 +35,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         setContentView(R.layout.activity_catalog);
 
         Intent intent = getIntent();
-        mCurrentRiderUri = intent.getData();
+        // Uri currentRiderUri = intent.getData();
 
         ListView riderListView = findViewById(R.id.list);
 

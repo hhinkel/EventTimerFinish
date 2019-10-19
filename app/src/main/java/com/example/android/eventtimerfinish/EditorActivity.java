@@ -38,14 +38,13 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private String mNumber;
     private String mOldNumber;
     private String mDivisionString;
-    RadioButton[] mDivision;
-    String[] mDivisionArray;
-    RadioGroup mDivisionGroup;
+    private RadioButton[] mDivision;
+    private String[] mDivisionArray;
     private int mFenceNum;
     private long mStartTime;
     private long mFinishTime;
     private boolean mRiderHasChanged = false;
-    Context mContext;
+    private Context mContext;
 
 
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
@@ -80,31 +79,36 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     private void createRadioGroup(Context context, LinearLayout layout) {
-        mDivisionGroup = new RadioGroup(context);
-        mDivisionGroup.setOrientation(RadioGroup.VERTICAL);
+        RadioGroup divisionGroup = new RadioGroup(context);
+        divisionGroup.setOrientation(RadioGroup.VERTICAL);
 
         mDivisionArray = getResources().getStringArray(R.array.array_division_options);
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        mDivisionGroup.setLayoutParams(layoutParams);
+        divisionGroup.setLayoutParams(layoutParams);
         mDivision = new RadioButton[mDivisionArray.length];
 
         for(int i = 0; i < mDivisionArray.length; i++){
             mDivision[i] = new RadioButton(context);
             mDivision[i].setText(mDivisionArray[i]);
             mDivision[i].setTextColor(Color.BLACK);
-            mDivisionGroup.addView(mDivision[i]);
+            divisionGroup.addView(mDivision[i]);
         }
 
-        layout.addView(mDivisionGroup);
+        layout.addView(divisionGroup);
+
+        divisionGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                mDivisionString = mDivisionArray[i];
+            }
+        });
     }
 
     private void saveRider() {
         mNumber = mNumberEditText.getText().toString().trim();
-        int index = mDivisionGroup.getCheckedRadioButtonId();
-        mDivisionString = mDivisionArray[index];
 
         if (mCurrentRiderUri == null &&
                 TextUtils.isEmpty(mNumber)) {

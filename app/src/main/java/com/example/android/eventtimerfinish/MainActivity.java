@@ -48,6 +48,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (savedInstanceState != null) {
+            String number = savedInstanceState.getString("number");
+            division = savedInstanceState.getString("division");
+            userInput = findViewById(R.id.numberEntered);
+            userInput.setText(number);
+        }
+
         //Register the buttons
         btn[0] = findViewById(R.id.button0);
         btn[1] = findViewById(R.id.button1);
@@ -313,5 +320,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    @Override
+    public void onSaveInstanceState (Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (userInput != null) {
+            outState.putString("number", userInput.getText().toString());
+            outState.putString("division", division);
+        }
+    }
+
+    @Override
+    public void onRestoreInstanceState (Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
     }
 }
