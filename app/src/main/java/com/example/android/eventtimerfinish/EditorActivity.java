@@ -13,13 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,7 +34,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private static final int EXISTING_RIDER_LOADER = 0;
     private Uri mCurrentRiderUri;
     private EditText mNumberEditText;
-    private Spinner mDivisionEditSpinner;
     private String mNumber;
     private String mOldNumber;
     private String mDivision;
@@ -46,8 +42,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private long mFinishTime;
     private boolean mRiderHasChanged = false;
 
-    private String mDivisionArray[] = getResources().getStringArray(R.array.array_division_options);
-    private int mNumDivisions = mDivisionArray.length;
+    String[] mDivisionArray;
 
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
@@ -68,7 +63,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         setTitle(getString(R.string.editor_activity_title_edit_rider));
         getSupportLoaderManager().initLoader(EXISTING_RIDER_LOADER, null, this);
 
-        final LinearLayout layout = (LinearLayout) findViewById(R.id.item_layout);
+        final LinearLayout layout = findViewById(R.id.item_layout);
         mNumberEditText = findViewById(R.id.edit_rider_number);
 
         mNumberEditText.setOnTouchListener(mTouchListener);
@@ -76,12 +71,13 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         Context context = getApplicationContext();
         createRadioGroup(context, layout);
 
-//        setupSpinner();
     }
 
     private void createRadioGroup(Context context, LinearLayout layout) {
         RadioGroup divisionGroup = new RadioGroup(context);
-        divisionGroup.setOrientation(RadioGroup.HORIZONTAL);
+        divisionGroup.setOrientation(RadioGroup.VERTICAL);
+
+        mDivisionArray = getResources().getStringArray(R.array.array_division_options);
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -90,46 +86,13 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         RadioButton[] division = new RadioButton[mDivisionArray.length];
 
         for(int i = 0; i < mDivisionArray.length; i++){
+            division[i] = new RadioButton(context);
             division[i].setText(mDivisionArray[i]);
             division[i].setTextColor(Color.BLACK);
             divisionGroup.addView(division[i]);
         }
 
-        /* RadioButton novice = new RadioButton(context);
-        novice.setText("Novice");
-        novice.setTextColor(Color.BLACK);
-        divisionGroup.addView(novice);
-
-        RadioButton beginnerNovice = new RadioButton(context);
-        beginnerNovice.setText("Beginner Novice");
-        beginnerNovice.setTextColor(Color.BLACK);
-        divisionGroup.addView(beginnerNovice);  */
-
         layout.addView(divisionGroup);
-    }
-
-    private void setupSpinner() {
-        ArrayAdapter divisionSpinnerAdapter = ArrayAdapter.createFromResource(this,
-                R.array.array_division_options, android.R.layout.simple_spinner_item);
-        divisionSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        mDivisionEditSpinner.setAdapter(divisionSpinnerAdapter);
-
-        mDivisionEditSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selection = (String) parent.getItemAtPosition(position);
-                if (!TextUtils.isEmpty(selection)) {
-                    mDivision = selection;
-                } else {
-                    mDivision = "Division Unknown";
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                mDivision = "Division Unknown";
-            }
-        });
     }
 
     private void saveRider() {
@@ -284,36 +247,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 mOldNumber = oldNumber;
             else
                 mOldNumber = mNumber;
-
-     /*       switch (division) {
-                case "Advanced":
-                    mDivisionEditSpinner.setSelection(0);
-                    break;
-                case "Intermediate":
-                    mDivisionEditSpinner.setSelection(1);
-                    break;
-                case "Preliminary":
-                    mDivisionEditSpinner.setSelection(2);
-                    break;
-                case "Modified":
-                    mDivisionEditSpinner.setSelection(3);
-                    break;
-                case "Training":
-                    mDivisionEditSpinner.setSelection(4);
-                    break;
-                case "Novice":
-                    mDivisionEditSpinner.setSelection(5);
-                    break;
-                case "Beginner Novice":
-                    mDivisionEditSpinner.setSelection(6);
-                    break;
-                case "Starter":
-                    mDivisionEditSpinner.setSelection(7);
-                    break;
-                case "Division Unknown":
-                    mDivisionEditSpinner.setSelection(8);
-                    break;
-            } */
         }
     }
 
