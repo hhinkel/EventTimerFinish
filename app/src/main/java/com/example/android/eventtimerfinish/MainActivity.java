@@ -236,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final View dialogView = inflater.inflate(R.layout.layout_popup, null);
         builder.setView(dialogView);
 
-        userInput = (EditText) dialogView.findViewById(R.id.add_number);
+        userInput = dialogView.findViewById(R.id.add_number);
 
         builder.setTitle("Please enter the Rider Number");
         builder.setMessage("Enter Number");
