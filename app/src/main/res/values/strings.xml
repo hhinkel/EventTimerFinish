@@ -16,6 +16,7 @@
     <string name="finish">Finish</string>
     <string name="action_view_all_entries">View Entered Data</string>
     <string name="action_delete_all_entries">Delete Entered Data</string>
+    <string name="action_download">Export Entered Data</string>
     <string name="action_uninstall">Uninstall</string>
     <string name="empty_view_title_text">No Riders yet</string>
     <string name="empty_view_subtitle_text">Nope</string>
@@ -38,6 +39,9 @@
     <string name="action_delete">Delete</string>
     <string name="action_save">Save</string>
     <string name="division">Division</string>
+    <string name="export_all_msg">Are you sure you want to export the data\n
+                                The show should be over when you do this</string>
+    <string name="export">Export</string>
 
     <string-array name="array_division_options">
         <item>Novice</item>

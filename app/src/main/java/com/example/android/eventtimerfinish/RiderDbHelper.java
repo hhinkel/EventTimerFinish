@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class RiderDbHelper extends  SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "rider.db";
+    public static final String DATABASE = "rider";
+    public static final String EXTENSION = ".db";
+    public static final String DATABASE_NAME = DATABASE + EXTENSION;
     private static final int DATABASE_VERSION = 10;
 
     RiderDbHelper(Context context) {

@@ -16,6 +16,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_download_to_computer"
+        android:title="@string/action_download"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_uninstall"
         android:title="@string/action_uninstall"
         app:showAsAction="never" />

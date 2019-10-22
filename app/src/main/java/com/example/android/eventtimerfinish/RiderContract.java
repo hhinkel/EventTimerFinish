@@ -33,13 +33,5 @@ public final class RiderContract {
         public static final String COLUMN_RIDER_FINISH = "finish";
         public static final String COLUMN_EDIT = "edit";
 
-        public static boolean isDivisionValid(String division) {
-            if (division == "Advanced" || division == "Intermediate" || division == "Preliminary"
-            || division == "Modified" || division == "Training" || division == "Novice"
-            || division == "Beginner Novice" || division == "Starter" || division == "Division Unknown") {
-                return true;
-            }
-            return false;
-        }
     }
 }
