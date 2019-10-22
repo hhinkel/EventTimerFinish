@@ -378,6 +378,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     File csvFile = new File(path, fileName);
                     if (!csvFile.exists()) {
                         createCSVFile(dbHelper, csvFile);
+                    } else {
+                        if(csvFile.lastModified() < Calendar.DATE) {
+                            csvFile.delete();
+                            createCSVFile(dbHelper, csvFile);
+                        } else {
+                            showFileDeleteErrorDialog();
+                        }
                     }
                 } else {
                     requestPermission();
@@ -389,6 +396,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 File csvFile = new File(path, fileName);
                 if (!csvFile.exists()) {
                     createCSVFile(dbHelper, csvFile);
+                } else {
+                    if(csvFile.lastModified() < Calendar.DATE) {
+                        csvFile.delete();
+                        createCSVFile(dbHelper, csvFile);
+                    } else {
+                        showFileDeleteErrorDialog();
+                    }
                 }
             }
         }
@@ -420,7 +434,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         try {
             file.createNewFile();
-            //CSVWriter csvWrite = new CSVWriter(new FileWriter(file));
             SQLiteDatabase db = dbHelper.getReadableDatabase();
             Cursor cursor = db.rawQuery("SELECT * FROM "
             + RiderContract.RiderEntry.TABLE_NAME, null);
@@ -461,6 +474,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
         }
+    }
+
+    public void showFileDeleteErrorDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.cannot_delete_file_msg);
+        builder.setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                if (dialog != null)
+                    dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     @Override

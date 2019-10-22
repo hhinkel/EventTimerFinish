@@ -42,6 +42,9 @@
     <string name="export_all_msg">Are you sure you want to export the data\n
                                 The show should be over when you do this</string>
     <string name="export">Export</string>
+    <string name="cannot_delete_file_msg">The export file already exists for today. \n
+                                        Please delete it manually if necessary.</string>
+    <string name="ok">OK</string>
 
     <string-array name="array_division_options">
         <item>Novice</item>
