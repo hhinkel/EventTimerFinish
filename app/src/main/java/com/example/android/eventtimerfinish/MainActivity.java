@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String division;
 
     private static final int PERMISSION_REQUEST_CODE = 100;
+    private boolean permissionGranted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,7 +166,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     division = "Division Unknown";
                 }
             }
-
             public void onNothingSelected(AdapterView<?> parent) {
                 division = "Division Unknown";
             }
@@ -298,8 +298,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.v("MainActivity", rowsDeleted + " rows deleted from rider database");
     }
 
-    private void uninstallApp() {
-    }
+    private void uninstallApp() {}
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -372,38 +371,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             if (Build.VERSION.SDK_INT >= 23) {
                 if (checkPermission()) {
-
-                    File path = checkForDir(external, "CrossCountryScoring");
-
-                    File csvFile = new File(path, fileName);
-                    if (!csvFile.exists()) {
-                        createCSVFile(dbHelper, csvFile);
-                    } else {
-                        if(csvFile.lastModified() < Calendar.DATE) {
-                            csvFile.delete();
-                            createCSVFile(dbHelper, csvFile);
-                        } else {
-                            showFileDeleteErrorDialog();
-                        }
-                    }
+                    fileAsCSV(external, "CrossCountryScoring", fileName, dbHelper);
                 } else {
                     requestPermission();
-                }
-            } else {
-
-                File path = checkForDir(external, "CrossCountryScoring");
-
-                File csvFile = new File(path, fileName);
-                if (!csvFile.exists()) {
-                    createCSVFile(dbHelper, csvFile);
-                } else {
-                    if(csvFile.lastModified() < Calendar.DATE) {
-                        csvFile.delete();
-                        createCSVFile(dbHelper, csvFile);
-                    } else {
-                        showFileDeleteErrorDialog();
+                    if (permissionGranted) {
+                        fileAsCSV(external, "CrossCountryScoring", fileName, dbHelper);
                     }
                 }
+            } else {
+                fileAsCSV(external, "CrossCountryScoring", fileName, dbHelper);
+            }
+        }
+    }
+
+    private void fileAsCSV(String rootPath, String newFolder, String fileName, RiderDbHelper dbHelper) {
+
+        File path = checkForDir(rootPath, newFolder);
+
+        File csvFile = new File(path, fileName);
+        if (!csvFile.exists()) {
+            createCSVFile(dbHelper, csvFile);
+        } else {
+            if(csvFile.lastModified() < Calendar.DATE) {
+                csvFile.delete();
+                createCSVFile(dbHelper, csvFile);
+            } else {
+                showFileDeleteErrorDialog();
             }
         }
     }
@@ -468,9 +461,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.e("value", "Permission Granted, Now you can use local drive .");
+                    permissionGranted = true;
                 } else {
-                    Log.e("value", "Permission Denied, You cannot use local drive .");
+                    permissionGranted = false;
                 }
                 break;
         }
