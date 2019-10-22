@@ -374,9 +374,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     fileAsCSV(external, "CrossCountryScoring", fileName, dbHelper);
                 } else {
                     requestPermission();
-                    if (permissionGranted) {
-                        fileAsCSV(external, "CrossCountryScoring", fileName, dbHelper);
-                    }
                 }
             } else {
                 fileAsCSV(external, "CrossCountryScoring", fileName, dbHelper);
