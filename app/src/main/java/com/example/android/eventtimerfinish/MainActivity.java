@@ -298,8 +298,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.v("MainActivity", rowsDeleted + " rows deleted from rider database");
     }
 
-    private void uninstallApp() {}
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -314,7 +312,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 showExportConfirmationDialog();
                 return true;
             case R.id.action_uninstall:
-                uninstallApp();
+                showUnistallConfirmationDialog();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -438,6 +436,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } catch (Exception ex) {
             Log.e("MainActivity.csv", ex.getMessage(), ex);
         }
+    }
+
+    private void showUnistallConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.uninstall_msg);
+        builder.setPositiveButton(R.string.uninstall, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                uninstallApp();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                if (dialog != null)
+                    dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void uninstallApp() {
+        Intent intent = new Intent(Intent.ACTION_DELETE);
+        intent.setData(Uri.parse("package:com.example.android.eventtimerfinish"));
+        startActivity(intent);
     }
 
     private boolean checkPermission() {
