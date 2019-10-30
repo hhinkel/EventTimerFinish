@@ -25,6 +25,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".SettingsActivity"
+            android:parentActivityName=".MainActivity" >
+        </activity>
+        <activity
             android:name=".CatalogActivity"
             android:parentActivityName=".MainActivity" >
         </activity>

@@ -301,6 +301,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                return true;
             case R.id.action_view_all_enteries:
                 Intent catalogIntent = new Intent(this, CatalogActivity.class);
                 startActivity(catalogIntent);

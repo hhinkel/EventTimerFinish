@@ -49,6 +49,8 @@
                                  The show should be over and the data no longer needed before you do this.\n
                                  Data that has been exported will not be deleted.</string>
     <string name="uninstall">Uninstall</string>
+    <string name="settings">Settings</string>
+    <string name="current_division">Current Division</string>
 
     <string-array name="array_division_options">
         <item>Novice</item>
