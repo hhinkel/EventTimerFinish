@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //Global Variables
     Button[] btn = new Button[13];
     EditText userInput;
-    ConstraintLayout relativeLayout;
+//    ConstraintLayout relativeLayout;
 
     private Spinner divisionSpinner;
     private String division;
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn[12] = findViewById(R.id.buttonFinish);
 
         divisionSpinner = findViewById(R.id.spinner_division);
-        relativeLayout = findViewById(R.id.relative_layout);
+//        relativeLayout = findViewById(R.id.relative_layout);
 
         //Setup on click listener
         for (int i = 0; i < 13; i++) {
