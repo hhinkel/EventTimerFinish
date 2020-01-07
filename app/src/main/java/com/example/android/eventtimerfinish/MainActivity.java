@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setupDivisionSpinner() {
         ArrayAdapter divisionSpinnerAdapter = ArrayAdapter.createFromResource(this,
-                R.array.array_division_options, android.R.layout.simple_spinner_item);
+                R.array.array_division_options, R.layout.division_spinner_item);
 
         divisionSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 
