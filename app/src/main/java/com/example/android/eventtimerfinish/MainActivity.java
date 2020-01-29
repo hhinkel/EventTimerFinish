@@ -256,22 +256,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.layout_popup, null);
-        builder.setView(dialogView);
-
         userInput = dialogView.findViewById(R.id.add_number);
+        builder.setView(dialogView);
 
         builder.setTitle("Please enter the Rider Number");
         builder.setMessage("Enter Number");
         builder.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                processNumber(userInput.getText().toString(), now, finishTime);
-                clearNumber(userInput);
+
             }
         });
-        AlertDialog alertDialog = builder.create();
+        final AlertDialog alertDialog = builder.create();
         alertDialog.show();
-        showSoftNumPad(dialogView);
+        //showSoftNumPad(dialogView);
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String rNumber = userInput.getText().toString();
+                boolean closeDialog = false;
+                if(!rNumber.isEmpty()) {
+                    processNumber(userInput.getText().toString(), now, finishTime);
+                    clearNumber(userInput);
+                    closeDialog = true;
+                }
+                if(closeDialog)
+                    alertDialog.dismiss();
+            }
+        });
     }
 
     public void showSoftNumPad(View view) {
