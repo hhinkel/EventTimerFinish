@@ -82,7 +82,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         RadioGroup divisionGroup = new RadioGroup(context);
         divisionGroup.setOrientation(RadioGroup.VERTICAL);
 
-        mDivisionArray = getResources().getStringArray(R.array.array_division_options);
+        Utils utils = new Utils();
+        mDivisionArray = utils.getDivisionNames(mContext, null);
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
